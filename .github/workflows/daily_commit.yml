@@ -26,12 +26,11 @@ jobs:
 
       - name: Commit and push changes — 24f2007572@ds.study.iitm.ac.in
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
           git add daily_update.txt
           git commit -m "Daily update from GitHub Action $(date +%s)" || echo "No changes to commit"
-          git push https://x-access-token:${GITHUB_TOKEN}@github.com/24f2007572-PJ/Daily_Update.git HEAD:main
-
-          git add daily_update.txt
-          git commit -m "Daily update from GitHub Action $(date +%s)" || echo "No changes to commit"
-          git push
+          git push https://x-access-token:${PAT_TOKEN}@github.com/24f2007572-PJ/Daily_Update.git HEAD:main
+    git add daily_update.txt
+    git commit -m "Daily update from GitHub Action $(date +%s)" || echo "No changes to commit"
+    git push https://x-access-token:${PAT_TOKEN}@github.com/24f2007572-PJ/Daily_Update.git HEAD:main
