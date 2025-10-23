@@ -2,20 +2,22 @@ name: Daily Commit
 
 on:
   schedule:
-    - cron: '30 14 * * *'  # Runs daily at 14:30 UTC
-  workflow_dispatch:  # Optional manual trigger
+    - cron: '30 14 * * *'     # every day 14:30 UTC
+  workflow_dispatch:
 
 jobs:
   commit_job:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write           # needed even with PAT
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          persist-credentials: false   # IMPORTANT: disables the default token
 
       - name: Make a trivial change
-        run: |
-          # Add a timestamp so every run produces a new commit
-          echo "Daily update $(date +%s)" >> daily_update.txt
+        run: echo "Daily update $(date +%s)" >> daily_update.txt
 
       - name: Configure Git
         run: |
