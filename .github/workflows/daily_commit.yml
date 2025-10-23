@@ -2,8 +2,8 @@ name: Daily Commit
 
 on:
   schedule:
-    - cron: '30 14 * * *'  # daily at 14:30 UTC
-  workflow_dispatch:
+    - cron: '30 14 * * *'  # Runs daily at 14:30 UTC
+  workflow_dispatch:  # Optional manual trigger
 
 jobs:
   commit_job:
@@ -11,12 +11,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-        with:
-          persist-credentials: true
 
       - name: Make a trivial change
         run: |
-          # Append a timestamp to guarantee a change
+          # Add a timestamp so every run produces a new commit
           echo "Daily update $(date +%s)" >> daily_update.txt
 
       - name: Configure Git
@@ -26,11 +24,8 @@ jobs:
 
       - name: Commit and push changes — 24f2007572@ds.study.iitm.ac.in
         env:
-        PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
           git add daily_update.txt
           git commit -m "Daily update from GitHub Action $(date +%s)" || echo "No changes to commit"
           git push https://x-access-token:${PAT_TOKEN}@github.com/24f2007572-PJ/Daily_Update.git HEAD:main
-    git add daily_update.txt
-    git commit -m "Daily update from GitHub Action $(date +%s)" || echo "No changes to commit"
-    git push https://x-access-token:${PAT_TOKEN}@github.com/24f2007572-PJ/Daily_Update.git HEAD:main
